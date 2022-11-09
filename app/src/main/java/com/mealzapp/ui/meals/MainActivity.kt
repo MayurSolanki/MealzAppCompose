@@ -1,4 +1,4 @@
-package com.mealzapp
+package com.mealzapp.ui.meals
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,11 +10,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mealzapp.ui.theme.MealzAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+       // val viewModel by viewModels<MealCategoriesViewModel>() // This is old fashioned used before componse
         setContent {
             MealzAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -22,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    MealCategoriesScreen()
                 }
             }
         }
@@ -30,14 +32,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun MealCategoriesScreen() {
+    val viewModel : MealCategoriesViewModel = viewModel()  // This is compose bind viewmodel, singleton instance
+    val meals = viewModel.getMeals()
+    Text(text = meals.toString())
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     MealzAppTheme {
-        Greeting("Android")
+        MealCategoriesScreen()
     }
 }
