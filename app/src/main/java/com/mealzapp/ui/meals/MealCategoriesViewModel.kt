@@ -1,13 +1,13 @@
 package com.mealzapp.ui.meals
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.mealzapp.model.MealResponse
 import com.mealzapp.model.MealsCategoriesResponse
 import com.mealzapp.model.MealsRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -16,20 +16,25 @@ class MealCategoriesViewModel(): ViewModel() {
 
     private val repository: MealsRepository = MealsRepository()
 
+    private val _meals: MutableStateFlow<MealResponse?> = MutableStateFlow(null)
+    val meals = _meals.asStateFlow()
+
+//    private val _meals: MutableStateFlow<List<MealResponse>> =
+//        MutableStateFlow(emptyList())
+//    val meals: MutableStateFlow<List<MealResponse>> = _meals
+
     init {
-       // getMealsInfo()
+        getMealsInfo()
     }
-//    var meals = liveData<Response<MealsCategoriesResponse>> {
-//        val rcvdAlbum : Response<MealsCategoriesResponse> = repository.getMealData()
-//        Log.d("rcvdAlbum", rcvdAlbum.toString())
-//        emit(rcvdAlbum)
-//    }
-    fun getMealsInfo() {
+
+
+    private fun getMealsInfo() {
         viewModelScope.launch {
             repository.getMealData()
                 .flowOn(Dispatchers.IO)
                 .collect {
-                     Log.d("getMealsInfo : ", it.body()?.categories?.get(1).toString())
+                    _meals.value = it.body()?.categories?.get(1)
+                    // Log.d("getMealsInfo : ", it.body()?.categories?.get(1).toString())
                 }
         }
     }
