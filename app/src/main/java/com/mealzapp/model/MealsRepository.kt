@@ -14,4 +14,7 @@ class MealsRepository  {
         }
 
 
+    suspend fun getMealDataDummy() = mealsWebservice.getMeals()
+
+
 }

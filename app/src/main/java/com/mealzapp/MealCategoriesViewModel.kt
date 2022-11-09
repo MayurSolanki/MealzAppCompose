@@ -1,4 +1,4 @@
-package com.mealzapp.ui.meals
+package com.mealzapp
 
 import android.util.Log
 import androidx.lifecycle.*
