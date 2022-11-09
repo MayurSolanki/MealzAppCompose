@@ -16,7 +16,7 @@ class MealCategoriesViewModel(): ViewModel() {
 
     private val repository: MealsRepository = MealsRepository()
 
-    private val _meals: MutableStateFlow<MealResponse?> = MutableStateFlow(null)
+    private val _meals: MutableStateFlow<List<MealResponse>?> = MutableStateFlow(null)
     val meals = _meals.asStateFlow()
 
 //    private val _meals: MutableStateFlow<List<MealResponse>> =
@@ -33,7 +33,7 @@ class MealCategoriesViewModel(): ViewModel() {
             repository.getMealData()
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    _meals.value = it.body()?.categories?.get(1)
+                    _meals.value = it.body()?.categories
                     // Log.d("getMealsInfo : ", it.body()?.categories?.get(1).toString())
                 }
         }
