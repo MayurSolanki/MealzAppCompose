@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MealCategoriesScreen() {
     val viewModel : MealCategoriesViewModel = viewModel()  // This is compose bind viewmodel, singleton instance
-    val meals = viewModel.getMeals()
+    val meals = viewModel.getMealsInfo()
     Text(text = meals.toString())
 }
 

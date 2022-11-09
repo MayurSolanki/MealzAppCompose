@@ -1,9 +1,17 @@
 package com.mealzapp.model
 
-import com.mealzapp.model.api.MealsWebservice
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import retrofit2.Response
 
-class MealsRepository (private val webservice: MealsWebservice = MealsWebservice()) {
-    fun getMeals(): MealsCategoriesResponse? {
-        return webservice.getMeals().execute().body()
-    }
+class MealsRepository  {
+
+    var mealsWebservice: MealsWebservice = RetrofitInstance.mealRetrofitService
+
+    suspend fun getMealData(): Flow<Response<MealsCategoriesResponse>> =
+        flow {
+                emit(mealsWebservice.getMeals())
+        }
+
+
 }
